@@ -2,7 +2,7 @@ spring:
   redis:
     sentinel:
       nodes:
-        148.70.215.26:26381,148.70.215.26:26382
+        ------:26381,------:26382
       master: mymaster
     timeout: 10000ms
     database: 0
@@ -19,17 +19,17 @@ spring:
     #        max-idle: 50
     #        min-idle: 0
     #        max-wait: -1ms
-    password: HYQ&messi
+    password: ------
 
 
   #数据库连接配置
   datasource:
     url:
-      jdbc:mysql://148.70.215.26:3306/learning?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true&useSSL=false
+      jdbc:mysql://-------:3306/learning?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&autoReconnect=true&useSSL=false
     username:
       root
     password:
-      HYQ&messi123
+      -------
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     #    hibernate:
