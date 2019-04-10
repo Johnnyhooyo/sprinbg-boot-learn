@@ -2,7 +2,7 @@ spring:
   redis:
     sentinel:
       nodes:
-        -----:26381,----:26382
+        148.70.215.26:26381,148.70.215.26:26382
       master: mymaster
     database: 0
     lettuce:
@@ -11,7 +11,7 @@ spring:
         max-idle: 500
         min-idle: 0
         max-wait: -1ms
-    password: ----
+    password: HYQ&messi
 
 # 单机模式
 #spring:
@@ -23,6 +23,6 @@ spring:
 #        max-idle: 500
 #        min-idle: 0
 #        max-wait: -1ms
-#    host: -------
+#    host: 148.70.215.26
 #    port: 6379
-#    password: -----
+#    password: HYQ&messi
