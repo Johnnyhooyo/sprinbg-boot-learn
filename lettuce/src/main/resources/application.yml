@@ -12,3 +12,17 @@ spring:
         min-idle: 0
         max-wait: -1ms
     password: HYQ&messi
+
+# 单机模式
+#spring:
+#  redis:
+#    database: 0
+#    lettuce:
+#      pool:
+#        max-active: 500
+#        max-idle: 500
+#        min-idle: 0
+#        max-wait: -1ms
+#    host: 148.70.215.26
+#    port: 6379
+#    password: HYQ&messi
