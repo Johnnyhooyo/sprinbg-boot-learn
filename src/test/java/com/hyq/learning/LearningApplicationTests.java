@@ -21,6 +21,7 @@ public class LearningApplicationTests {
     public void sigtonTest() {
         System.out.println("start");
         asyncServerExecutor.execute(() -> {
+            System.out.println(Thread.currentThread().getName());
             Sigton1 instance = Sigton1.getInstance();
             System.out.println(instance);
         });
