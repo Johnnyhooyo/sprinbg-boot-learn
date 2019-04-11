@@ -58,6 +58,17 @@ public class ConsumerNoTwo {
         throw new RuntimeException();
     }
 
+    @JmsListener(destination = "ackQueue", containerFactory = "ackQueueListener")
+    public void ackQueueConsumerWithoutException(Message message) {
+        try {
+            log.info("ackQueueConsumerWithoutException:" + message.getStringProperty("value"));
+            Thread.sleep(5000);
+            log.info("i'm not ack");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
    @JmsListener(destination = "ackQueue", containerFactory = "ackQueueListenerWithTransaction")
    public void ackQueueDLQConsumer(Message message, Session session) {
        try {
