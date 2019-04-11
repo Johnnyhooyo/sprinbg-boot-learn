@@ -1,0 +1,9 @@
+spring:
+  activemq:
+    broker-url: tcp://148.70.215.26:61616
+    user: admin
+    password: admin
+    send-timeout: 0ms
+  jms:
+    pub-sub-domain: true
+
