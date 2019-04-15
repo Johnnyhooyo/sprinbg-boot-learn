@@ -1,10 +1,12 @@
 package com.hyq.activemq;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.activemq.command.ActiveMQMessage;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
 
+import javax.jms.JMSException;
 import javax.jms.Message;
 
 /**
@@ -32,6 +34,18 @@ public class Consumer {
     public String basketballQueueConsumer(String message) {
         log.info("basketballQueueConsumer1:" + message);
         return "basketballQueueConsumer1.receipt";
+    }
+
+    @JmsListener(destination = "receiveQueue", containerFactory = "queueListener")
+    public Message receiveQueueConsumer(Message message) {
+        Message message1 = new ActiveMQMessage();
+        try {
+            log.info("basketballQueueConsumer1:" + message.getStringProperty("receive"));
+            message1.setStringProperty("back", "i got it");
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
+        return message1;
     }
 
 

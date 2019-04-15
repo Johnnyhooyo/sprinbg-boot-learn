@@ -42,6 +42,11 @@ public class ActivemqConfig {
     }
 
     @Bean
+    public Queue receiveQueue() {
+        return new ActiveMQQueue("receiveQueue");
+    }
+
+    @Bean
     public Queue ackQueue() {
         return new ActiveMQQueue("ackQueue");
     }

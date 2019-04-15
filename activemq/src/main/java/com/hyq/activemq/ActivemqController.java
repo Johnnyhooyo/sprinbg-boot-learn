@@ -4,15 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.command.ActiveMQMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Queue;
-import javax.jms.Topic;
+import javax.jms.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.stream.IntStream;
@@ -41,6 +39,9 @@ public class ActivemqController {
 
     @Resource
     private Topic basketballTopic;
+
+    @Resource
+    private Queue receiveQueue;
 
     @Resource
     private Queue ackQueue;
@@ -84,5 +85,23 @@ public class ActivemqController {
             e.printStackTrace();
         }
         jmsTemplate.convertAndSend(ackQueue, message);
+    }
+
+    @ResponseBody
+    @RequestMapping("/mq/topic/sendAndReceive")
+    public void sendAndReceive(HttpServletRequest request, HttpServletResponse response) throws JMSException {
+        log.info("sendAndReceive.send");
+        Message message = jmsTemplate.sendAndReceive(receiveQueue, new MessageCreator() {
+            @Override
+            public Message createMessage(Session session) throws JMSException {
+                //return session.createTextMessage("sendAndReceive");
+                ActiveMQMessage activeMQMessage = new ActiveMQMessage();
+                activeMQMessage.setStringProperty("receive", "answer me!");
+                return activeMQMessage;
+            }
+        });
+        if (null != message) {
+            log.info("message:{}", message.getStringProperty("back"));
+        }
     }
 }
