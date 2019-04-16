@@ -7,7 +7,33 @@
    client: 客户端手动确认
    ### question0:
    在client模式下，我没有手动确认消息，为什么服务端还是出队了
-   ### answer0： not real right answer
+   ### answer0： 
+   当我们关系事务，并且设置接受模式为CLIENT_ACKNOWLEDGE，发现并没有起作用。原因如下（源码自动转为自动确认了）：
+    //org.springframework.jms.listener.AbstractMessageListenerContainer
+   ```
+   protected void commitIfNecessary(Session session, @Nullable Message message) throws JMSException {
+           if (session.getTransacted()) {
+               if (this.isSessionLocallyTransacted(session)) {
+                   JmsUtils.commitIfNecessary(session);
+               }
+           } else if (message != null && this.isClientAcknowledge(session)) {
+               message.acknowledge();
+           }
+   
+       }
+   ```
+   目前可以使用一下配置达到手动确认的目的：
+   ```
+     @Bean
+       public JmsListenerContainerFactory<?> ackQueueListener(ConnectionFactory connectionFactory) {
+           DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+           factory.setPubSubDomain(false);
+           factory.setSessionTransacted(false);
+           factory.setSessionAcknowledgeMode(4);
+           factory.setConnectionFactory(connectionFactory);
+           return factory;
+       }
+   ```
    因为程序没有异常，在方法执行完后还是会自动ack，我们显示抛出一个异常就可以了。重试几次默认是6后会加入ActiveMQ.DLQ。
    客户端成功接收一条消息的标志是一条消息被签收，成功应答。
    消息的签收情形分两种：

@@ -76,7 +76,7 @@ public class ActivemqConfig {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setPubSubDomain(false);
         factory.setSessionTransacted(false);
-        factory.setSessionAcknowledgeMode(Session.CLIENT_ACKNOWLEDGE);
+        factory.setSessionAcknowledgeMode(4);
         factory.setConnectionFactory(connectionFactory);
         return factory;
     }
