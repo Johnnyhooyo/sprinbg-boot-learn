@@ -1,4 +1,4 @@
-package com.hyq.learning;
+package com.hyq.learning.thread;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
