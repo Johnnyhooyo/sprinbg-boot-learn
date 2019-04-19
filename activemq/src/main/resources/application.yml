@@ -4,6 +4,9 @@ spring:
     user: admin
     password: admin
     send-timeout: 0ms
+    packages:
+      trust-all: true
   jms:
     pub-sub-domain: true
+
 

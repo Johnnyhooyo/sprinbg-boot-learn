@@ -1,5 +1,7 @@
 package com.hyq.activemq;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.command.ActiveMQMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,9 @@ import javax.annotation.Resource;
 import javax.jms.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.stream.IntStream;
 
 /**
@@ -39,6 +44,9 @@ public class ActivemqController {
 
     @Resource
     private Topic basketballTopic;
+
+    @Resource
+    private Queue objectQueue;
 
     @Resource
     private Queue receiveQueue;
@@ -103,5 +111,31 @@ public class ActivemqController {
         if (null != message) {
             log.info("message:{}", message.getStringProperty("back"));
         }
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/mq/queue/object")
+    public void objectQueueProducer(HttpServletRequest request, HttpServletResponse response) {
+        log.info("objectQueueProducer.send");
+        Car car = new Car();
+        car.setId(1);
+        car.setName("volvo");
+        car.setPrice(new BigDecimal("300000"));
+        jmsTemplate.convertAndSend(objectQueue, car);
+    }
+
+    @ResponseBody
+    @RequestMapping("/mq/queue/map")
+    public void mapQueueProducer(HttpServletRequest request, HttpServletResponse response) {
+        log.info("mapQueueProducer.send");
+        HashMap<String, Object> carHashMap = Maps.newHashMap();
+        carHashMap.put("volvo", "volvo is my favourite");
+        carHashMap.put("benz", "benz is bad");
+        carHashMap.put("all", Lists.newArrayList("one", "two"));
+        HashMap<String, String> hashMap = Maps.newHashMap();
+        hashMap.put("volvo", "sdk");
+        carHashMap.put("map", hashMap);
+        jmsTemplate.convertAndSend(objectQueue, carHashMap);
     }
 }

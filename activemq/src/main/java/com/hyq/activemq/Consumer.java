@@ -1,13 +1,18 @@
 package com.hyq.activemq;
 
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.activemq.command.ActiveMQMapMessage;
 import org.apache.activemq.command.ActiveMQMessage;
+import org.apache.activemq.command.ActiveMQObjectMessage;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author dibulidohu
@@ -69,6 +74,29 @@ public class Consumer {
             log.info("already ack");
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @JmsListener(destination = "objectQueue", containerFactory = "queueListener")
+    public void objectQueueConsumer(Message message) {
+        log.info("objectQueue:" + message);
+        Gson gson = new Gson();
+        try {
+            if (message instanceof ActiveMQObjectMessage) {
+                ActiveMQObjectMessage objectMessage = (ActiveMQObjectMessage) message;
+                Car car = (Car) objectMessage.getObject();
+                log.info("i have a car!!!!! --->{}", gson.toJson(car));
+            } else if (message instanceof ActiveMQMapMessage) {
+                ActiveMQMapMessage mapMessage = (ActiveMQMapMessage) message;
+                Map<String, Object> contentMap = mapMessage.getContentMap();
+                Set<String> strings = contentMap.keySet();
+                for (String string : strings) {
+                    Object o = contentMap.get(string);
+                    log.info("this car in mine:{}, say:{}", string, o.toString());
+                }
+            }
+        } catch (JMSException e) {
+            log.error(e.toString());
         }
     }
 }

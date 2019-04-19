@@ -52,6 +52,11 @@ public class ActivemqConfig {
     }
 
     @Bean
+    public Queue objectQueue() {
+        return new ActiveMQQueue("objectQueue");
+    }
+
+    @Bean
     public JmsListenerContainerFactory<?> topicListener(ConnectionFactory connectionFactory) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setPubSubDomain(true);
@@ -87,6 +92,14 @@ public class ActivemqConfig {
         factory.setPubSubDomain(false);
         factory.setSessionTransacted(true);
         factory.setSessionAcknowledgeMode(Session.CLIENT_ACKNOWLEDGE);
+        factory.setConnectionFactory(connectionFactory);
+        return factory;
+    }
+
+    @Bean
+    public JmsListenerContainerFactory<?> objectQueueListener(ConnectionFactory connectionFactory) {
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        factory.setPubSubDomain(false);
         factory.setConnectionFactory(connectionFactory);
         return factory;
     }

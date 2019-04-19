@@ -80,3 +80,29 @@
   
  ### jmsTemplate
  jmsTemplate.sendAndReceive：阻塞接收来自消费者的消息
+
+ ### 消息类型
+ JMS API 定义了5种消息体格式，也叫消息类型，可以使用不同形式发送接收数据并可以兼容现有的消息格式，下面描述这5种类型： 
+ 1. TextMessage：java.lang.String对象，如xml文件内容。
+ 2. MapMessage：key/value键值对的集合，key是String对象，值类型可以是Java任何基本类型。 
+ 3. BytesMessage：字节流。
+ 4. StreamMessage：Java 中的输入输出流。
+ 5. ObjectMessage：Java中的可序列化对象。
+  
+ 另外，还有一种是Message，没有消息体，只有消息头和属性。   
+ 
+ -  1. 对应的object必须实现Serializable接口。
+    2. 必须配置 spring.active.packages.trust-all: true;或者设置连接工厂的<property name="trustAllPackages" value="true"/>
+    3. 接收端使用如下方法接受
+       ```
+       if (message instanceof ActiveMQObjectMessage) {
+           ActiveMQObjectMessage objectMessage = (ActiveMQObjectMessage) message;
+           Car car = (Car) objectMessage.getObject();
+           Gson gson = new Gson();
+           log.info("i have a car!!!!! --->{}", gson.toJson(car));
+       }
+       ```
+ - MapMessage:Only objectified primitive objects, String, Map and List types are allowed
+ - BytesMessage.writeBytes(byte b)
+ - StreamMesage携带了一个Java原始数据类型流作为有效负载。它提供了一套将格式化字节流映射为Java原始数据类型的简便方法。 
+   StreamMessage保持了写入流时的顺序和原始数据类型，因此它适用于形式转换规则。
