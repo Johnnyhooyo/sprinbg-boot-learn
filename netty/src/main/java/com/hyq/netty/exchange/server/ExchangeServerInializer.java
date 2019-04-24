@@ -7,7 +7,10 @@ import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.Delimiters;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.CharsetUtil;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author dibulidohu
@@ -24,6 +27,7 @@ public class ExchangeServerInializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new DelimiterBasedFrameDecoder(4096, Delimiters.lineDelimiter()));
         pipeline.addLast(new StringDecoder(CharsetUtil.UTF_8));
         pipeline.addLast(new StringEncoder(CharsetUtil.UTF_8));
+        pipeline.addLast(new IdleStateHandler(5,7,10, TimeUnit.SECONDS)); // 心跳检测
         pipeline.addLast(new ExchangeHandler());
     }
 }
