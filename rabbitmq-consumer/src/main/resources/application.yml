@@ -1,0 +1,11 @@
+spring:
+  rabbitmq:
+    host: 148.70.215.26
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        prefetch: 10 # 消费者queue的缓冲数量  如果有多（n）个消费者 再n*10个消息内就是平均分配，多余的就是那个消费快给那个
+server:
+  port: 8081

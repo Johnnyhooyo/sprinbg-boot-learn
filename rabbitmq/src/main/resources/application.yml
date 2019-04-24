@@ -1,0 +1,16 @@
+spring:
+  rabbitmq:
+    host: 148.70.215.26
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        prefetch: 10
+        acknowledge-mode: manual
+  jms:
+    template:
+      delivery-mode: persistent  # Enable QoS when set.
+      qos-enabled: true
+server:
+  port: 8082
