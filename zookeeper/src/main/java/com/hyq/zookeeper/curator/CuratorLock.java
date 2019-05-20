@@ -3,7 +3,7 @@ package com.hyq.zookeeper.curator;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.locks.InterProcessLock;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 
 /**
  * @author dibulidohu
@@ -13,17 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Slf4j
 public class CuratorLock {
-    @Autowired
-    private CuratorFactoryBean curatorFactoryBean;
-    private CuratorFramework client;
     private InterProcessLock lock;
-
-    public CuratorLock() {
-        try {
-            client = curatorFactoryBean.getObject();
-        } catch (Exception e) {
-            log.error("CuratorLock initial error :{}", e);
-        }
+    private static final String ROOT_PATH = "/curator/";
+    public CuratorLock(CuratorFramework client, String lockName) {
+        lock = new InterProcessMutex(client, ROOT_PATH + lockName);
     }
 
     public boolean lock() {

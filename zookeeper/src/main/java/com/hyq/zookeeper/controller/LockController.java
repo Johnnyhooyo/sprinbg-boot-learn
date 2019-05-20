@@ -1,6 +1,8 @@
 package com.hyq.zookeeper.controller;
 
 import com.hyq.zookeeper.core.ZooKeeperBase;
+import com.hyq.zookeeper.curator.CuratorFactoryBean;
+import com.hyq.zookeeper.curator.CuratorLock;
 import com.hyq.zookeeper.service.ZooLock;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,7 @@ public class LockController {
     @Resource
     Executor executor;
 
-    @Autowired
+    @Resource
     ZooKeeperBase zooKeeperBase;
 
     @GetMapping(value = "/test")
@@ -41,6 +43,28 @@ public class LockController {
                     }
                 } catch (InterruptedException e) {
                     log.error("thread {} error!!!", Thread.currentThread());
+                }
+            });
+        }
+    }
+
+    @Resource
+    CuratorFactoryBean curatorFactoryBean;
+
+    @GetMapping(value = "/curator")
+    public void curator(HttpServletRequest request) {
+        log.info("curator start");
+        for (int i = 0; i< 10; i++) {
+            executor.execute(() -> {
+                try {
+                    CuratorLock lock  = new CuratorLock(curatorFactoryBean.getObject(), "curatorLock");
+                    if (lock.lock()){
+                        log.info("thread [{}]get lock", Thread.currentThread());
+                        Thread.sleep(1000);
+                        lock.unLock();
+                    }
+                } catch (Exception e) {
+                    log.error("thread {} error!!! {}", Thread.currentThread(), e);
                 }
             });
         }
