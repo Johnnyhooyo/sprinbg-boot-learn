@@ -48,25 +48,25 @@ public class LockController {
         }
     }
 
-    @Resource
-    CuratorFactoryBean curatorFactoryBean;
-
-    @GetMapping(value = "/curator")
-    public void curator(HttpServletRequest request) {
-        log.info("curator start");
-        for (int i = 0; i< 10; i++) {
-            executor.execute(() -> {
-                try {
-                    CuratorLock lock  = new CuratorLock(curatorFactoryBean.getObject(), "curatorLock");
-                    if (lock.lock()){
-                        log.info("thread [{}]get lock", Thread.currentThread());
-                        Thread.sleep(1000);
-                        lock.unLock();
-                    }
-                } catch (Exception e) {
-                    log.error("thread {} error!!! {}", Thread.currentThread(), e);
-                }
-            });
-        }
-    }
+//    @Resource
+//    CuratorFactoryBean curatorFactoryBean;
+//
+//    @GetMapping(value = "/curator")
+//    public void curator(HttpServletRequest request) {
+//        log.info("curator start");
+//        for (int i = 0; i< 10; i++) {
+//            executor.execute(() -> {
+//                try {
+//                    CuratorLock lock  = new CuratorLock(curatorFactoryBean.getObject(), "curatorLock");
+//                    if (lock.lock()){
+//                        log.info("thread [{}]get lock", Thread.currentThread());
+//                        Thread.sleep(1000);
+//                        lock.unLock();
+//                    }
+//                } catch (Exception e) {
+//                    log.error("thread {} error!!! {}", Thread.currentThread(), e);
+//                }
+//            });
+//        }
+//    }
 }

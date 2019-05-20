@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  * @description
  */
 @Slf4j
-@Component
+//@Component
 public class CuratorFactoryBean implements FactoryBean<CuratorFramework>, InitializingBean, DisposableBean {
 
     private CuratorFramework client;
