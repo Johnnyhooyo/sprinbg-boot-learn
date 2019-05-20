@@ -16,7 +16,7 @@ import java.util.UUID;
  * @author dibulidohu
  * @classname ServiceProvider
  * @date 2019/5/2015:41
- * @description
+ * @description at spring start, filter @link ZooService then call registerService
  */
 @Slf4j
 @Component

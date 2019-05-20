@@ -9,14 +9,11 @@ import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,7 +21,7 @@ import java.util.List;
  * @author dibulidohu
  * @classname ServiceConsumer
  * @date 2019/5/2016:36
- * @description
+ * @description service discovery
  */
 @Slf4j
 @Component

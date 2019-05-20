@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
  * @author dibulidohu
  * @classname ServiceInfo
  * @date 2019/5/2017:20
- * @description
+ * @description service entity
  */
 @Data
 public class ServiceInfo {

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
  * @description
  */
 @Slf4j
+//为了服务注册正常启动 测试curator时候打开
 //@Component
 public class CuratorFactoryBean implements FactoryBean<CuratorFramework>, InitializingBean, DisposableBean {
 
