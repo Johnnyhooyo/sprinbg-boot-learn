@@ -1,0 +1,7 @@
+logging:
+  path: C:\java\workspace\mylearning
+  file: zookeeper.log
+  level.root: info
+  pattern:
+    console: "%d{yyyy/MM/dd-HH:mm:ss} [%thread] %-5level %logger- %msg%n"
+    file: "%d{yyyy/MM/dd-HH:mm} [%thread] %-5level %logger- %msg%n"
