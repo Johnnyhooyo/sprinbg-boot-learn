@@ -30,6 +30,10 @@ public class CommenCllient {
     public static String post(ServiceEnum serviceEnum, Object object) throws IOException {
         ServiceInfo serviceInfo = ServiceConsumer.getServiceInfo(serviceEnum.getName());
         String serviceAddr = serviceInfo.getServiceAddr();
+        return httpPost(object, serviceAddr);
+    }
+
+    public static String httpPost(Object object, String serviceAddr) throws IOException {
         CloseableHttpClient closeableHttpClient = HttpClients.createDefault();
         try {
             HttpPost httpPost = new HttpPost("http://" + serviceAddr);
