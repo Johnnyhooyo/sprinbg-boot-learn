@@ -3,6 +3,7 @@ package com.hyq.zookeeper.core.service;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.hyq.zookeeper.core.LockException;
 import com.hyq.zookeeper.core.ZooKeeperBase;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.KeeperException;
@@ -44,6 +45,16 @@ public class ServiceConsumer  {
         service.addService();
     }
 
+    public static ServiceInfo getServiceInfo(String serviceName) {
+        List<ServiceInfo> serviceInfos = serviceTree.get(serviceName);
+        if (CollectionUtils.isEmpty(serviceInfos)) {
+            throw new LockException("10001", "no service available");
+        }
+        //here can implements a load balancing policy
+        int index = (int) (Math.random() * serviceInfos.size());
+        return serviceInfos.get(index);
+    }
+
     class ServiceTree implements Watcher {
 
         public void addService() {
@@ -54,7 +65,7 @@ public class ServiceConsumer  {
                     List<String> paths = zooKeeper.getChildren(servicePath, this);
                     for (String path : paths) {
                         byte[] data = zooKeeper.getData(servicePath + "/" + path, null, null);
-                        addServiceToTree(servicePath, data);
+                        addServiceToTree(servicePath.substring(servicePath.lastIndexOf("/") + 1), data);
                     }
                 }
                 for (String serviceName : serviceTree.keySet()) {
