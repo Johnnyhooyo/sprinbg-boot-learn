@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author dibulidohu
- * @classname DingTalkContreoller
- * @date 2019/5/2113:16
+ * @classname DingTalkController
+ * @date 2019/5/21 13:16
  * @description
  */
 @Slf4j
