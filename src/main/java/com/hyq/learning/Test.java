@@ -1,9 +1,6 @@
 package com.hyq.learning;
 
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Stack;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * @author dibulidohu
@@ -14,6 +11,13 @@ import java.util.Vector;
 public class Test {
 
     public static void main(String[] args) {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            list.add(i);
+        }
+        list.remove(1);
+        list.add(11);
+        list.add(12);
         long l = System.currentTimeMillis();
         Stack<Integer> stack = new Stack<>();
         for (int i = 0; i < 1000; i++) {

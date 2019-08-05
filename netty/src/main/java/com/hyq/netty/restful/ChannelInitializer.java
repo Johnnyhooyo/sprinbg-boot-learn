@@ -26,8 +26,8 @@ public class ChannelInitializer extends io.netty.channel.ChannelInitializer<Sock
         if (sslCtx != null) {
             p.addLast(sslCtx.newHandler(socketChannel.alloc()));
         }
-        p.addLast(new HttpServerCodec());/*HTTP 服务的解码器*/
-        p.addLast(new HttpObjectAggregator(2048));/*HTTP 消息的合并处理*/
-        p.addLast(new HealthServerHandler()); /*自己写的服务器逻辑处理*/
+        p.addLast(new HttpServerCodec());//HTTP 服务的解码器
+        p.addLast(new HttpObjectAggregator(2048));//HTTP 消息的合并处理
+        p.addLast(new HealthServerHandler()); //自己写的服务器逻辑处理
     }
 }
