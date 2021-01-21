@@ -1,6 +1,7 @@
 package com.hyq.file;
 
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,7 @@ import java.util.Map;
 /**
  * @author dibulidohu
  * @classname TestController
- * @date 2019/4/219:31
+ * @date 2019/4/219:31e
  * @description
  */
 @RestController
@@ -45,5 +46,11 @@ public class TestController {
                 System.out.println();
             }
         }
+    }
+
+    @ResponseBody
+    @GetMapping("/cbs/v1/test")
+    public void skjsfd(HttpServletRequest servletRequest, HttpServletResponse servletResponse) throws IOException {
+        TestObject testObject = new TestObject();
     }
 }
