@@ -6,6 +6,7 @@
     <modules>
         <module>hflink</module>
         <module>chatroom</module>
+        <module>chatroom-server</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
