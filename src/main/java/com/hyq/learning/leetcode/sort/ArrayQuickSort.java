@@ -2,7 +2,7 @@ package com.hyq.learning.leetcode.sort;
 
 /**
  * @author dibulidohu
- * @classname ArrayQickSort
+ * @classname ArrayQuickSort
  * @date 2019/5/917:50
  * @description
  */

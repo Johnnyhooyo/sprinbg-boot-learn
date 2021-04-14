@@ -1,5 +1,6 @@
 package com.hyq.learning.leetcode.threadcyc;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -16,23 +17,35 @@ public class ConditionMethod {
     private static Condition condition3 = Lock.newCondition();
 
     private static int mark = 0;
+    private static AtomicInteger count = new AtomicInteger(0);
     static class ThreadA extends Thread {
         @Override
         public void run() {
             try {
                 while (true) {
-                    Lock.lock();
-                    if (mark != 0) {
-                        condition1.await();
+                    if (30 <= count.get()) {
+                        break;
                     }
-                    System.out.println("A");
+                    Lock.lock();
+                    System.out.println(Thread.currentThread().getName() + "get lock");
+                    if (mark != 0) {
+                        System.out.println(Thread.currentThread().getName() + "await");
+
+                        condition1.await();
+                        System.out.println(Thread.currentThread().getName() + "go");
+
+                    }
+                    System.out.println(count.get() + "A"  + "---" + Lock.getHoldCount());
                     mark = 1;
                     condition2.signal();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
+                System.out.println(Thread.currentThread().getName() + "exit");
                 Lock.unlock();
+                condition3.signal();
+                condition2.signal();
             }
         }
     }
@@ -41,18 +54,29 @@ public class ConditionMethod {
         public void run() {
             try {
                 while (true) {
-                    Lock.lock();
-                    if (mark != 1) {
-                        condition2.await();
+                    if (30 <= count.get()) {
+                        break;
                     }
-                    System.out.println("B");
+                    Lock.lock();
+                    System.out.println(Thread.currentThread().getName() + "get lock");
+                    if (mark != 1) {
+                        System.out.println(Thread.currentThread().getName() + "await");
+
+                        condition2.await();
+                        System.out.println(Thread.currentThread().getName() + "go");
+
+                    }
+                    System.out.println(count.get() + "B" + "---" + Lock.getHoldCount());
                     mark = 2;
                     condition3.signal();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
+                System.out.println(Thread.currentThread().getName() + "exit");
                 Lock.unlock();
+                condition1.signal();
+                condition3.signal();
             }
         }
     }
@@ -61,18 +85,28 @@ public class ConditionMethod {
         public void run() {
             try {
                 while (true) {
-                    Lock.lock();
-                    if (mark != 2) {
-                        condition3.await();
+                    if (30 <= count.get()) {
+                        break;
                     }
-                    System.out.println("C");
+                    Lock.lock();
+                    System.out.println(Thread.currentThread().getName() + "get lock");
+                    if (mark != 2) {
+                        System.out.println(Thread.currentThread().getName() + "await");
+                        condition3.await();
+                        System.out.println(Thread.currentThread().getName() + "go");
+                    }
+                    System.out.println(count.getAndAdd(1) + "C"  + "---" + Lock.getHoldCount());
+
                     mark = 0;
                     condition1.signal();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
+                System.out.println(Thread.currentThread().getName() + "exit");
                 Lock.unlock();
+                condition1.signal();
+                condition2.signal();
             }
         }
     }
